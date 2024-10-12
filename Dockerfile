@@ -27,6 +27,16 @@ WORKDIR /workdir
 RUN wget --no-check-certificate https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz
 RUN tar zxvf Python-${PYTHON_VERSION}.tgz
 WORKDIR /workdir/Python-${PYTHON_VERSION}
+RUN set -x && \
+    arch=$(uname -m) && \
+    if [ "${arch}" = "x86_64" ]; then \
+        ./configure --with-openssl=/usr/local/ssl --with-openssl-rpath=/usr/local/ssl/lib64 --enable-optimizations; \
+    elif [ "${arch}" = "aarch64"  ]; then \
+        ./configure --with-openssl=/usr/local/ssl --enable-optimizations; \
+    else \
+        echo "Unsupported architecture: ${arch}."; \
+        exit 1; \
+    fi
 RUN ./configure --with-openssl=/usr/local/ssl --enable-optimizations
 RUN make
 RUN make install
