@@ -37,7 +37,6 @@ RUN set -x && \
         echo "Unsupported architecture: ${arch}."; \
         exit 1; \
     fi
-RUN ./configure --with-openssl=/usr/local/ssl --enable-optimizations
 RUN make
 RUN make install
 
