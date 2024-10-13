@@ -15,12 +15,12 @@ WORKDIR /workdir
 RUN wget https://github.com/openssl/openssl/releases/download/openssl-${OPENSSL_VERSION}/openssl-${OPENSSL_VERSION}.tar.gz
 RUN tar zxvf openssl-${OPENSSL_VERSION}.tar.gz && rm openssl-${OPENSSL_VERSION}.tar.gz
 WORKDIR /workdir/openssl-${OPENSSL_VERSION}
-RUN ./Configure --prefix=/usr/local/ssl --openssldir=/usr/local/ssl shared
+RUN ./Configure --prefix=/usr/lib/ssl --openssldir=/usr/lib/ssl shared
 RUN make
 RUN make install
 
 # configure environment variable for python build
-ENV LD_LIBRARY_PATH="/usr/local/ssl/lib"
+ENV LD_LIBRARY_PATH="/usr/lib/ssl/lib"
 
 # install python
 WORKDIR /workdir
@@ -30,18 +30,15 @@ WORKDIR /workdir/Python-${PYTHON_VERSION}
 RUN set -x && \
     arch=$(uname -m) && \
     if [ "${arch}" = "x86_64" ]; then \
-        ./configure --with-openssl=/usr/local/ssl --with-openssl-rpath=/usr/local/ssl/lib64 --enable-optimizations; \
+        ./configure --with-openssl=/usr/lib/ssl --with-openssl-rpath=/usr/lib/ssl/lib64 --enable-optimizations; \
     elif [ "${arch}" = "aarch64"  ]; then \
-        ./configure --with-openssl=/usr/local/ssl --enable-optimizations; \
+        ./configure --with-openssl=/usr/lib/ssl --enable-optimizations; \
     else \
         echo "Unsupported architecture: ${arch}."; \
         exit 1; \
     fi
 RUN make
 RUN make install
-
-# copy certificates
-RUN cp -a /usr/lib/ssl/certs/* /usr/local/ssl/certs/
 
 # clean up
 WORKDIR /
