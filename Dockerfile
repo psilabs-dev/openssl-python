@@ -21,7 +21,7 @@ RUN make install
 
 # install python
 WORKDIR /workdir
-RUN wget --no-check-certificate https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz
+RUN wget https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz
 RUN tar zxvf Python-${PYTHON_VERSION}.tgz
 WORKDIR /workdir/Python-${PYTHON_VERSION}
 RUN set -x && \
