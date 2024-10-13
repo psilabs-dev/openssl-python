@@ -19,9 +19,6 @@ RUN ./Configure --prefix=/usr/lib/ssl --openssldir=/usr/lib/ssl shared
 RUN make
 RUN make install
 
-# configure environment variable for python build
-ENV LD_LIBRARY_PATH="/usr/lib/ssl/lib"
-
 # install python
 WORKDIR /workdir
 RUN wget --no-check-certificate https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz
