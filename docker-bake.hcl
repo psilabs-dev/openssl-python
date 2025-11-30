@@ -7,7 +7,7 @@ variable "PYTHON_VERSION" {
 }
 
 variable "OPENSSL_VERSION" {
-  default = "3.3.1"
+  default = "3.6.0"
 }
 
 target "default" {

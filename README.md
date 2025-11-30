@@ -8,3 +8,9 @@ Build all available OpenSSL and Python versions.
 ```sh
 docker buildx bake
 ```
+
+Build test
+```sh
+docker build -t test-pixiv -f test.Dockerfile .
+docker run -it --rm -e PIXIV_COOKIE=$PIXIV_COOKIE test-pixiv
+```
